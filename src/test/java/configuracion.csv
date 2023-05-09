@@ -1,0 +1,4 @@
+puntosPronostico:1
+puntosBonus:2
+nombreDB:"dbtpjava"
+pathDB:"jdbc:mysql://"

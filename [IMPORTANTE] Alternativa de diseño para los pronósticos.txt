@@ -1,0 +1,52 @@
+ALTERNATIVA DE DISEÑO PARA LA LECTURA DE LOS PRONÓSTICOS (más sencilla)
+
+En el video hemos mencionado que frente a cada línea que se lee del archivo "pronostico.csv" habría que instanciar dos objetos de la clase "Pronostico":
+
+	- Una instancia de Pronóstico sobre lo que le sucede al Equipo 1 del partido (GANA, PIERDE, EMPATA)
+	- Una instancia de Pronóstico sobre lo que le sucede al Equipo 2 del partido (GANA, PIERDE, EMPATA)
+
+Si bien esta forma de pensar es válida tendríamos que tener en cuenta que cuando se comienza con el recuento de "Puntos obtenidos por aciertos" para una persona,
+no habría que otorgarle 2 (dos) puntos en caso de que los 2 (dos) Pronósticos brindados por el partido X sean correctos, sino solamente 1 (uno):
+	- Si un equipo gana, el otro pierde
+	- Si un equipo pierde, el otro gana
+	- Si un equipo empata, el otro también empata
+
+Pero no es la única forma de pensarlo y considerarlo. Como alternativa proponemos que cada línea leída del archivo "pronostico.csv" sea una sola instancia de 
+la clase "Pronóstico". En ese sentido, si una de las líneas del archivo tuviera:
+
+	- Equipo 1 | Gana 1 | Empata | Gana 2 | Equipo 2
+	- Argentina| X 	    | 	     | 	      | Arabia Saudita
+
+Nuestra única instancia (para esa persona, para ese partido en particular) podría tener seteado los atributos:
+	- pronostico1:
+		- Partido: partido1 (Argentina - Arabia Saudita)
+		- Equipo: equipo1 (Argentina)
+		- Resultado: GANA
+
+Si quisiéramos saber la cantidad de puntos obtenidos para ese pronóstico (saber si acertamos o no), podríamos hacer algo como:
+
+	- pronostico1.puntos() -> Nos devolvería un número entero con la cantidad de puntos obtenidos
+
+Y una posible implementación para el método "puntos" de la clase "Pronostico" podría ser:
+
+public class Pronostico {
+	// todos los atributos necesarios
+
+	public int puntos() {
+		int puntos = 0;
+		ResultadoEnum resultadoRealParaEquipo = this.partido.resultado(this.equipo);
+		if(resultadoRealParaEquipo == this.resultado) {
+			puntos = 20;
+		}
+		return puntos;
+	}
+}
+
+La implementación del método "resultado(equipo)" de la clase Partido queda a criterio de cada equipo cómo desarrollarlo, aunque si lo pensamos:
+	- Dependiendo el equipo que le llegue (equipo1 o equipo2), tendría que fijarse la cantidad de goles que obtuvo ese equipo en ese Partido (cantGoles1 o cantGoles2)
+	- Una vez obtenida la cant. de goles, debería compararlo contra los goles obtenidos por el otro equipo:
+		- Si cantGoles1 > cantGoles2 -> equipo1 GANA, equipo2 PIERDE
+		- Si cantGoles2 > cantGoles1 -> equipo2 GANA, equipo2 PIERDE
+		- Si cantGoles 1 == cantGoles2 -> EMPATE
+
+¡Éxitos!
